@@ -13,32 +13,23 @@ final class ScheduleViewModel: ObservableObject {
     @Published private(set) var schedule: DailySchedule
     
     private let scheduler = HydrationScheduler()
+    private var cancellables = Set<AnyCancellable>()
     
-    init() {
-        let calendar = Calendar.current
+    init(settings: SettingsViewModel) {
+        self.schedule = scheduler.makeSchedule(from: settings.hydrationSettings)
         
-        let wakeTime = calendar.date(
-            bySettingHour: 8,
-            minute: 0,
-            second: 0,
-            of: Date()
-        ) ?? Date()
-        
-        let sleepTime = calendar.date(
-            bySettingHour: 22,
-            minute: 0,
-            second: 0,
-            of: Date()
-        ) ?? Date()
-        
-        let settings = HydrationSettings(
-            wakeTime: wakeTime,
-            sleepTime: sleepTime,
-            dailyGoal: 2000,
-            bottleSize: 500
-        )
-        
-        self.schedule = scheduler.makeSchedule(from: settings)
+        settings.$wakeTime
+            .combineLatest(
+                settings.$sleepTime,
+                settings.$dailyGoal,
+                settings.$bottleSize
+            )
+            .sink { [weak self] _, _, _, _ in
+                guard let self else { return }
+                
+                self.schedule = self.scheduler.makeSchedule(from: settings.hydrationSettings)
+            }
+            .store(in: &cancellables)
     }
     
     func canCompleteBottle(_ item: BottleScheduleItem) -> Bool {

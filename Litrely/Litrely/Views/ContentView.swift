@@ -9,11 +9,19 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject private var viewModel = ScheduleViewModel()
+    @StateObject private var settings = SettingsViewModel()
+    @StateObject private var viewModel: ScheduleViewModel
+    
+    init() {
+        let settings = SettingsViewModel()
+        _settings = StateObject(wrappedValue: settings)
+        _viewModel = StateObject(wrappedValue: ScheduleViewModel(settings: settings))
+    }
     
     var body: some View {
         NavigationStack {
             VStack(spacing: 16) {
+                
                 VStack(spacing: 8) {
                     Text("Today's Goal")
                         .font(.headline)
@@ -52,7 +60,6 @@ struct ContentView: View {
                         
                         if item.isCompleted {
                             Text("Completed")
-                                .fontWeight(.semibold)
                                 .foregroundStyle(.green)
                         } else {
                             Button("Complete") {
@@ -62,15 +69,9 @@ struct ContentView: View {
                             .disabled(!viewModel.canCompleteBottle(item))
                         }
                     }
-                    .padding(.vertical, 4)
                 }
-                .listStyle(.plain)
             }
             .navigationTitle("Litrely")
         }
     }
-}
-
-#Preview {
-    ContentView()
 }
