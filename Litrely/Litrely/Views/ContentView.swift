@@ -39,6 +39,10 @@ struct ContentView: View {
                             Text("Bottle \(item.bottleNumber)")
                                 .font(.headline)
                             
+                            Text("\(Int(item.amount)) mL")
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                            
                             Text("Finish by \(item.finishBy.formatted(date: .omitted, time: .shortened))")
                                 .font(.subheadline)
                                 .foregroundStyle(.secondary)
@@ -55,6 +59,7 @@ struct ContentView: View {
                                 viewModel.completeBottle(item)
                             }
                             .buttonStyle(.borderedProminent)
+                            .disabled(!viewModel.canCompleteBottle(item))
                         }
                     }
                     .padding(.vertical, 4)

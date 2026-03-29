@@ -30,14 +30,12 @@ struct HydrationScheduler {
         for bottleNumber in 1...totalBottles {
             let finishBy = wakeTime.addingTimeInterval(interval * Double(bottleNumber))
             
-            let targetAmount = min(
-                Double(bottleNumber) * settings.bottleSize,
-                settings.dailyGoal
-            )
+            let remainingGoal = settings.dailyGoal - (Double(bottleNumber - 1) * settings.bottleSize)
+            let amount = min(settings.bottleSize, remainingGoal)
             
             let item = BottleScheduleItem(
                 bottleNumber: bottleNumber,
-                targetAmount: targetAmount,
+                amount: amount,
                 finishBy: finishBy
             )
             

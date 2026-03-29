@@ -41,23 +41,31 @@ final class ScheduleViewModel: ObservableObject {
         self.schedule = scheduler.makeSchedule(from: settings)
     }
     
+    func canCompleteBottle(_ item: BottleScheduleItem) -> Bool {
+        guard let index = schedule.items.firstIndex(where: { $0.id == item.id }) else {
+            return false
+        }
+        
+        guard !schedule.items[index].isCompleted else {
+            return false
+        }
+        
+        if index == 0 {
+            return true
+        }
+        
+        return schedule.items[index - 1].isCompleted
+    }
+    
     func completeBottle(_ item: BottleScheduleItem) {
         guard let index = schedule.items.firstIndex(where: { $0.id == item.id }) else {
             return
         }
         
-        guard !schedule.items[index].isCompleted else {
+        guard canCompleteBottle(item) else {
             return
         }
         
         schedule.items[index].isCompleted = true
-    }
-}
-
-private extension BottleScheduleItem {
-    func targetAmountDelta(from items: [BottleScheduleItem]) -> Double {
-        guard bottleNumber > 1 else { return targetAmount }
-        let previous = items.first(where: { $0.bottleNumber == bottleNumber - 1 })?.targetAmount ?? 0
-        return targetAmount - previous
     }
 }

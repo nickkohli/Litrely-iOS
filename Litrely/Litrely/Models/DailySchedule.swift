@@ -15,8 +15,8 @@ struct DailySchedule {
     var completedAmount: Double {
         items
             .filter(\.isCompleted)
-            .map(\.targetAmount)
-            .max() ?? 0
+            .map(\.amount)
+            .reduce(0, +)
     }
     
     var progress: Double {

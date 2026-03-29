@@ -11,7 +11,7 @@ import Foundation
 struct BottleScheduleItem: Identifiable {
     let id = UUID()
     let bottleNumber: Int
-    let targetAmount: Double
+    let amount: Double
     let finishBy: Date
     var isCompleted: Bool = false
 }
