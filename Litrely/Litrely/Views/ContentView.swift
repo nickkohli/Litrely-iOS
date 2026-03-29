@@ -12,19 +12,44 @@ struct ContentView: View {
     
     var body: some View {
         NavigationStack {
-            List(viewModel.schedule.items) { item in
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Bottle \(item.bottleNumber)")
+            VStack(spacing: 16) {
+                
+                // Header
+                VStack(spacing: 8) {
+                    Text("Today's Goal")
                         .font(.headline)
+                        .foregroundStyle(.secondary)
                     
-                    Text("Target: \(Int(item.targetAmount)) mL")
-                        .font(.subheadline)
+                    Text("\(Int(viewModel.schedule.totalGoal)) mL")
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
                     
-                    Text("Finish by: \(item.finishBy.formatted(date: .omitted, time: .shortened))")
+                    Text("\(viewModel.schedule.items.count) bottles")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                 }
-                .padding(.vertical, 4)
+                .padding()
+                
+                // Schedule List
+                List(viewModel.schedule.items) { item in
+                    HStack {
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Bottle \(item.bottleNumber)")
+                                .font(.headline)
+                            
+                            Text("Finish by \(item.finishBy.formatted(date: .omitted, time: .shortened))")
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                        }
+                        
+                        Spacer()
+                        
+                        Text("\(Int(item.targetAmount)) mL")
+                            .fontWeight(.semibold)
+                    }
+                    .padding(.vertical, 4)
+                }
+                .listStyle(.plain)
             }
             .navigationTitle("Litrely")
         }
