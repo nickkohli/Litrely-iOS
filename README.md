@@ -70,7 +70,7 @@ This project is intentionally structured to reflect **industry-level iOS develop
 ---
 
 ## Repository Structure
-
+```
 /
 ├── README.md
 ├── documents/
@@ -89,7 +89,7 @@ This project is intentionally structured to reflect **industry-level iOS develop
     │   └── Utilities/
     ├── Resources/
     └── SupportingFiles/
-
+```
 *(Structure will evolve as features are implemented.)*
 
 ---
