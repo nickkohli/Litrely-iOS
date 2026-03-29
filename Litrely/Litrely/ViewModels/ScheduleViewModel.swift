@@ -10,7 +10,7 @@ import Foundation
 import Combine
 
 final class ScheduleViewModel: ObservableObject {
-    @Published var schedule: DailySchedule
+    @Published private(set) var schedule: DailySchedule
     
     private let scheduler = HydrationScheduler()
     
@@ -39,5 +39,19 @@ final class ScheduleViewModel: ObservableObject {
         )
         
         self.schedule = scheduler.makeSchedule(from: settings)
+    }
+    
+    func completeBottle(_ item: BottleScheduleItem) {
+        let newAmount = min(schedule.completedAmount + item.targetAmountDelta(from: schedule.items),
+                            schedule.totalGoal)
+        schedule.completedAmount = newAmount
+    }
+}
+
+private extension BottleScheduleItem {
+    func targetAmountDelta(from items: [BottleScheduleItem]) -> Double {
+        guard bottleNumber > 1 else { return targetAmount }
+        let previous = items.first(where: { $0.bottleNumber == bottleNumber - 1 })?.targetAmount ?? 0
+        return targetAmount - previous
     }
 }

@@ -5,6 +5,7 @@
 //  Created by Nick Kohli on 29/03/2026.
 //
 
+
 import SwiftUI
 
 struct ContentView: View {
@@ -13,8 +14,6 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 16) {
-                
-                // Header
                 VStack(spacing: 8) {
                     Text("Today's Goal")
                         .font(.headline)
@@ -24,13 +23,16 @@ struct ContentView: View {
                         .font(.largeTitle)
                         .fontWeight(.bold)
                     
-                    Text("\(viewModel.schedule.items.count) bottles")
+                    Text("\(Int(viewModel.schedule.completedAmount)) mL completed")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
+                    
+                    ProgressView(value: viewModel.schedule.progress)
+                        .padding(.top, 8)
+                        .padding(.horizontal)
                 }
                 .padding()
                 
-                // Schedule List
                 List(viewModel.schedule.items) { item in
                     HStack {
                         VStack(alignment: .leading, spacing: 4) {
@@ -44,8 +46,10 @@ struct ContentView: View {
                         
                         Spacer()
                         
-                        Text("\(Int(item.targetAmount)) mL")
-                            .fontWeight(.semibold)
+                        Button("Complete") {
+                            viewModel.completeBottle(item)
+                        }
+                        .buttonStyle(.borderedProminent)
                     }
                     .padding(.vertical, 4)
                 }
