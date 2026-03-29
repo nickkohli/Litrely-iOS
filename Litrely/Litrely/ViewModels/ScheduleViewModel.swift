@@ -42,9 +42,15 @@ final class ScheduleViewModel: ObservableObject {
     }
     
     func completeBottle(_ item: BottleScheduleItem) {
-        let newAmount = min(schedule.completedAmount + item.targetAmountDelta(from: schedule.items),
-                            schedule.totalGoal)
-        schedule.completedAmount = newAmount
+        guard let index = schedule.items.firstIndex(where: { $0.id == item.id }) else {
+            return
+        }
+        
+        guard !schedule.items[index].isCompleted else {
+            return
+        }
+        
+        schedule.items[index].isCompleted = true
     }
 }
 

@@ -13,4 +13,5 @@ struct BottleScheduleItem: Identifiable {
     let bottleNumber: Int
     let targetAmount: Double
     let finishBy: Date
+    var isCompleted: Bool = false
 }

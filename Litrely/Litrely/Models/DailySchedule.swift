@@ -9,10 +9,15 @@
 import Foundation
 
 struct DailySchedule {
-    let items: [BottleScheduleItem]
+    var items: [BottleScheduleItem]
     let totalGoal: Double
     
-    var completedAmount: Double = 0
+    var completedAmount: Double {
+        items
+            .filter(\.isCompleted)
+            .map(\.targetAmount)
+            .max() ?? 0
+    }
     
     var progress: Double {
         guard totalGoal > 0 else { return 0 }

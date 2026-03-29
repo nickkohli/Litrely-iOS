@@ -46,10 +46,16 @@ struct ContentView: View {
                         
                         Spacer()
                         
-                        Button("Complete") {
-                            viewModel.completeBottle(item)
+                        if item.isCompleted {
+                            Text("Completed")
+                                .fontWeight(.semibold)
+                                .foregroundStyle(.green)
+                        } else {
+                            Button("Complete") {
+                                viewModel.completeBottle(item)
+                            }
+                            .buttonStyle(.borderedProminent)
                         }
-                        .buttonStyle(.borderedProminent)
                     }
                     .padding(.vertical, 4)
                 }
