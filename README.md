@@ -119,7 +119,7 @@ This project is intentionally structured to reflect **industry-level iOS develop
 ## How to Run
 
 1. Clone the repository:
-   git clone https://github.com/your-username/Litrely-iOS.git
+   git clone https://github.com/nickkohli/Litrely-iOS.git
 
 2. Open the project in Xcode  
 3. Select a simulator or device  
